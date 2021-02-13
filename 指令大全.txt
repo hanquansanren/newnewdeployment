@@ -1,0 +1,150 @@
+pip install -r requirements.txt -i https://pypi.mirrors.ustc.edu.cn/simple/
+pip install -r requirements.txt -i pypi.v2ex.com/simple
+
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install -r requirements.txt -i http://pypi.tuna.tsinghua.edu.cn/simple
+
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx
+
+pip install Pillow-4.2.1-cp36-cp36m-win_amd64.whl
+
+
+转换到py3.6
+virtualenv -p C:\Users\lenovo\AppData\Local\Programs\Python\Python36\python.exe D:\E\Django_project\20210210\izone\env
+
+
+
+pip install -r plus.txt -i https://pypi.mirrors.ustc.edu.cn/simple/
+
+
+
+pip install jupyter -i http://pypi.douban.com/simple --trusted-host=pypi.douban.com
+
+妙啊下面的
+pip install django-haystack==2.7.0 -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host=pypi.tuna.tsinghua.edu.cn
+
+pip install Pillow==6.2.0 -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host=pypi.tuna.tsinghua.edu.cn
+
+pip install mysqlclient==1.4.4 -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host=pypi.tuna.tsinghua.edu.cn
+
+最终
+pip install -r requirements.txt -i http://pypi.tuna.tsinghua.edu.cn/simple --trusted-host=pypi.tuna.tsinghua.edu.cn
+pip install -r requirements.txt -i https://mirrors.cloud.aliyuncs.com/pypi/simple --trusted-host mirrors.cloud.aliyuncs.com
+
+
+
+
+git clone git@github.com:hanquansanren/deployment.git tendcode
+
+
+
+virtualenv --python==python3.6 izone_env
+virtualenv -p python3.5 izone_env
+
+source env/bin/activate
+
+
+vim /etc/mysql/mysql.conf.d/mysqld.cnf
+
+sudo service --status-all
+netstat -a | more
+netstat -aptn
+netstat -napt
+
+
+mysql -u root -p
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'wudaokou' WITH GRANT OPTION;
+flush privileges;
+
+
+telnet 47.115.46.231 8000
+
+
+
+gunicorn --bind unix:/tmp/47.115.46.231.socket izone.wsgi:application
+
+
+SELECT User, Host FROM mysql.user;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'wudaokou' WITH GRANT OPTION;
+-- UPDATE mysql.user SET Host='%' WHERE User='root';
+
+-- UPDATE mysql.user SET Host='%' WHERE User='root' AND Host='localhost' LIMIT 1;
+
+
+
+
+
+
+
+
+logs/nginx.access.log
+
+
+
+
+server {
+    # 端口和域名
+    listen 80;
+    server_name 47.115.46.231;
+
+    # 日志
+    #access_log /root/tendcode2/logs/nginx.access.log;
+    #error_log /root/tendcode2/logs/nginx.error.log;
+
+    # 不记录访问不到 favicon.ico 的报错日志
+    location = /favicon.ico { access_log off; log_not_found off; }
+    # static 和 media 的地址
+    location /static/ {
+        root /root/tendcode2;
+    }
+    location /media/ {
+        root /root/tendcode2;
+    }
+    # gunicorn 中生成的文件的地址
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/root/tendcode2/tendcode.sock;
+    }
+}
+----------------------------------------------------------
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=alex
+Group=www-data
+WorkingDirectory=/home/alex/tendcode
+ExecStart=/home/alex/izone_env/bin/gunicorn --access-logfile - --workers 2 --bind unix:/home/alex/tendcode/tendcode.sock izone.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+
+改造版
+server {
+  charset utf-8;
+  listen 80;
+  server_name 47.115.46.231;  # 改成你的 IP
+
+    # 日志
+    #access_log /root/tendcode2/logs/nginx.access.log;
+    #error_log /root/tendcode2/logs/nginx.error.log;
+
+    # 不记录访问不到 favicon.ico 的报错日志
+    location = /favicon.ico { access_log off; log_not_found off; }
+    # static 和 media 的地址
+    location /static/ {
+        root /root/tendcode2;
+    }
+    location /media/ {
+        root /root/tendcode2;
+    }
+
+  location / {
+            proxy_set_header x-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $http_host;
+            proxy_pass http://127.0.0.1:8000/; # gunicorn绑定的端口号
+  }
+}
