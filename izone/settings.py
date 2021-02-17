@@ -30,12 +30,13 @@ SECRET_KEY = os.getenv('IZONE_SECRET_KEY', '#!kta!9e0)24d@9#=*=ra$r!0k0+p5@w+a%7
 # 是否开启[在线工具]应用
 TOOL_FLAG = os.getenv('IZONE_TOOL_FLAG', 'True').upper() == 'TRUE'
 # 是否开启[API]应用
-API_FLAG = os.getenv('IZONE_API_FLAG', 'False').upper() == 'TRUE'
+API_FLAG = os.getenv('IZONE_API_FLAG', 'True').upper() == 'TRUE'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('IZONE_DEBUG', 'True').upper() == 'TRUE'
+#DEBUG = os.getenv('IZONE_DEBUG', 'True').upper() == 'TRUE'
+DEBUG=False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','.zhangwg.space']
 
 # Application definition
 
@@ -208,7 +209,7 @@ REST_FRAMEWORK = {
 
 # 配置数据库
 MYSQL_HOST = os.getenv('IZONE_MYSQL_HOST', '127.0.0.1')
-MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'tendcode')
+MYSQL_NAME = os.getenv('IZONE_MYSQL_NAME', 'mysite')
 MYSQL_USER = os.getenv('IZONE_MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('IZONE_MYSQL_PASSWORD', 'wudaokou')
 MYSQL_PORT = os.getenv('IZONE_MYSQL_PORT', 3306)

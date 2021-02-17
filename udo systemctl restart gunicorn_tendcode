@@ -1,0 +1,12 @@
+[0;1;31m●[0m gunicorn_tendcode.service - gunicorn daemon
+   Loaded: loaded (/etc/systemd/system/gunicorn_tendcode.service; enabled; vendor preset: enabled)
+   Active: [0;1;31mfailed[0m (Result: exit-code) since Sun 2021-02-14 11:01:44 CST; 1min 1s ago
+  Process: 2740 ExecStart=/root/izone_env/bin/gunicorn --access-logfile --workers 9 --bind unix:/root/miao/47.115.46.231.socket izone.wsgi:application [0;1;31m(code=exited, status=2)[0m
+ Main PID: 2740 (code=exited, status=2)
+
+Feb 14 11:01:43 iZwz94jogtq3g49ahn5ocnZ systemd[1]: Stopped gunicorn daemon.
+Feb 14 11:01:43 iZwz94jogtq3g49ahn5ocnZ systemd[1]: Started gunicorn daemon.
+Feb 14 11:01:44 iZwz94jogtq3g49ahn5ocnZ gunicorn[2740]: usage: gunicorn [OPTIONS] [APP_MODULE]
+Feb 14 11:01:44 iZwz94jogtq3g49ahn5ocnZ gunicorn[2740]: gunicorn: error: argument --access-logfile: expected one argument
+Feb 14 11:01:44 iZwz94jogtq3g49ahn5ocnZ systemd[1]: [0;1;39m[0;1;31m[0;1;39mgunicorn_tendcode.service: Main process exited, code=exited, status=2/INVALIDARGUMENT[0m
+Feb 14 11:01:44 iZwz94jogtq3g49ahn5ocnZ systemd[1]: [0;1;39m[0;1;31m[0;1;39mgunicorn_tendcode.service: Failed with result 'exit-code'.[0m
